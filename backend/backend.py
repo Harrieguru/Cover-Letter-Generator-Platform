@@ -127,7 +127,7 @@ Instructions:
 7. Do NOT include any header information, addresses, or dates
 8. Focus on connecting resume experience to job requirements
 9. keep it brief and concise but om depth enough to cover all the important aspects of an effective cover letter
-10. make it 2 paragraphs max (keep it simple)
+10. make it 2 paragraphs max (keep it simple!)
 
 Additional context:
 - Company: {personal_info.get('companyName', 'your company')}
