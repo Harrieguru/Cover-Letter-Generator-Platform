@@ -65,11 +65,11 @@ export const CoverLetterGenerator = () => {
     formData.append("jobDescription", jobDescription);
     formData.append("personalInfo", JSON.stringify(personalInfo));
 
-    const BACKEND_URL =
-      process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+    // process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
     try {
-      const response = await fetch(`${BACKEND_URL}/generate_cover_letter`, {
+      const response = await fetch(`${BACKEND_URL}/`, {
         method: "POST",
         body: formData,
       });
