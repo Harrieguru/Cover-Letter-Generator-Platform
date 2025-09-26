@@ -65,11 +65,13 @@ export const CoverLetterGenerator = () => {
     formData.append("jobDescription", jobDescription);
     formData.append("personalInfo", JSON.stringify(personalInfo));
 
-    // process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
-    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+    // Use environment variable with fallback
+    const BACKEND_URL =
+      process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
     try {
-      const response = await fetch(`${BACKEND_URL}/`, {
+      // FIXED: Use the correct endpoint
+      const response = await fetch(`${BACKEND_URL}/generate_cover_letter`, {
         method: "POST",
         body: formData,
       });
@@ -82,13 +84,16 @@ export const CoverLetterGenerator = () => {
         link.setAttribute("download", "Cover_Letter.docx");
         document.body.appendChild(link);
         link.click();
+        // Clean up
+        window.URL.revokeObjectURL(url);
         link.remove();
       } else {
-        throw new Error("Failed to generate cover letter");
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to generate cover letter");
       }
     } catch (error) {
       console.error("Error generating cover letter:", error);
-      alert("Error generating cover letter. Please try again.");
+      alert(`Error generating cover letter`);
     }
 
     setLoading(false);
