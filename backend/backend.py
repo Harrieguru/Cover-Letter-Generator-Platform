@@ -12,10 +12,18 @@ import cohere
 
 load_dotenv()
 
+# Load environment-specific .env file
+env = os.getenv("ENVIRONMENT", "local")  # Default to 'local'
+if env == "production":
+    load_dotenv(".env.production")
+else:
+    load_dotenv(".env")
+
 # Configure Cohere
 COHERE_API_KEY = os.getenv("COHERE_API_KEY") 
 co = cohere.Client(COHERE_API_KEY)
 MODEL_NAME = "command-a-03-2025"  # you can also try "command-r-plus"
+FALLBACK_MODEL = "command-r" 
 
 app = Flask(__name__)
 CORS(app)
@@ -218,6 +226,13 @@ Additional context:
     except Exception as e:
         print(f"Error in generate_cover_letter: {e}")
         return {"error": "Internal server error"}, 500
+    
+@app.route("/", methods=["GET", "POST"])
+def root():
+    if request.method == "GET":
+        return {"message": "Cover Letter Generator API", "status": "running", "endpoints": ["/improve_resume", "/generate_cover_letter", "/health"]}
+    else:
+        return {"error": "Root endpoint does not accept POST requests. Use /improve_resume or /generate_cover_letter"}, 400
 
 
 @app.route("/health", methods=["GET"])
@@ -225,7 +240,7 @@ def health_check():
     return {"status": "healthy", "model": MODEL_NAME}
 
 
-# if __name__ == "__main__":
-#     print("Starting Flask server...")
-#     print(f"Using Cohere key: {'✓ Set' if COHERE_API_KEY else '✗ Missing'}")
-#     app.run(debug=True, port=5000)
+if __name__ == "__main__":
+    print("Starting Flask server...")
+    print(f"Using Cohere key: {'✓ Set' if COHERE_API_KEY else '✗ Missing'}")
+    app.run(debug=True, port=5000)
