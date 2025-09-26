@@ -225,7 +225,7 @@ def health_check():
     return {"status": "healthy", "model": MODEL_NAME}
 
 
-if __name__ == "__main__":
-    print("Starting Flask server...")
-    print(f"Using Cohere key: {'✓ Set' if COHERE_API_KEY else '✗ Missing'}")
-    app.run(debug=True, port=5000)
+# if __name__ == "__main__":
+#     print("Starting Flask server...")
+#     print(f"Using Cohere key: {'✓ Set' if COHERE_API_KEY else '✗ Missing'}")
+#     app.run(debug=True, port=5000)
